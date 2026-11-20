@@ -86,3 +86,13 @@ button{touch-action:manipulation}
  .dock-caption{font-size:7px}
 }
 @media(prefers-reduced-motion:reduce){.distance-dock,.dock-track span{transition:none}}
+
+
+/* Foto-memória do capítulo 07 */
+.memory-photo{margin:30px 0 34px;max-width:390px}
+.memory-photo img{display:block;width:100%;height:auto;max-height:520px;object-fit:contain;border-radius:2px}
+.memory-photo figcaption{margin-top:12px;color:#75615f;font:italic 14px/1.6 var(--serif);text-align:center}
+@media(max-width:650px){
+ .memory-photo{width:min(100%,340px);margin:25px auto 30px}
+ .memory-photo figcaption{font-size:13px;padding:0 8px}
+}
