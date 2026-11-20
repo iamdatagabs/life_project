@@ -1,19 +1,38 @@
 # Uma história em andamento
 
-Site estático em HTML, CSS e JavaScript para publicação no GitHub Pages.
+Uma experiência pessoal e interativa, construída em HTML, CSS e JavaScript e publicada como site estático pelo GitHub Pages.
 
-## Publicar
+**Acesse:** https://iamdatagabs.github.io/life_project/
+
+## Estrutura do projeto
+
+- `index.html` — conteúdo, capítulos, imagens e estrutura da página.
+- `style.css` — identidade visual, tipografia e comportamento responsivo.
+- `script.js` — controles de áudio, animações e interações.
+- `assets/` — arquivos de áudio e imagens utilizados no site.
+
+## Recursos
+
+- Layout responsivo para celular e desktop.
+- Linha do tempo com capítulos e uma barra dinâmica que acompanha a leitura, indicando cidades e distâncias aproximadas em linha reta.
+- Trilha sonora com tentativa de reprodução automática. Como navegadores podem bloquear áudio automático, há também um controle manual para iniciar ou pausar a música.
+- Botão de interação final integrado ao EmailJS para enviar uma notificação quando for acionado.
+
+**Observação:** a notificação confirma apenas que o botão foi clicado; não permite saber se a página inteira foi lida. O funcionamento do envio depende da configuração do serviço EmailJS.
+
+## Publicação
+
+O site é servido pelo GitHub Pages a partir da branch `main`, na raiz do repositório.
+
+Para configurar ou conferir a publicação:
+
 1. Abra **Settings → Pages**.
-2. Em **Build and deployment**, escolha **Deploy from a branch**.
-3. Selecione `main` e `/ (root)`, depois salve.
-4. Aguarde a publicação: https://iamdatagabs.github.io/life_project/
+2. Em **Build and deployment**, selecione **Deploy from a branch**.
+3. Escolha a branch `main` e a pasta `/ (root)`.
+4. Salve e aguarde a publicação.
 
-## Música opcional
-O controle discreto está preparado para `assets/mulher-de-fases.mp3`. Crie a pasta `assets` e adicione um arquivo de áudio que você tenha direito de utilizar. A reprodução só começa quando a pessoa clicar. Sem o arquivo, o restante do site funciona normalmente.
+## Manutenção
 
-## Personalização
-- Textos: `index.html`
-- Visual: `style.css`
-- Interações: `script.js`
+Edite os arquivos diretamente no repositório. Ao atualizar o conteúdo ou os estilos, o GitHub Pages publica a nova versão após concluir o processo de deploy.
 
-Não há banco de dados, cookies, formulários ou rastreadores.
+A trilha sonora e as imagens ficam em `assets/`. Utilize apenas arquivos que você tenha autorização para publicar.
