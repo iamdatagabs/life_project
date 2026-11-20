@@ -10,54 +10,45 @@ function syncSoundControl() {
   sound.setAttribute("aria-label", playing ? "Pausar música" : "Ativar música");
 }
 
+let waitingForGesture = false;
+
 async function startMusic() {
   if (!audio.paused) return true;
   try {
     await audio.play();
+    waitingForGesture = false;
     syncSoundControl();
     return true;
   } catch {
-    // O navegador pode bloquear autoplay com som; tentaremos novamente
-    // assim que houver uma interação legítima da pessoa com a página.
+    // Safari e outros navegadores podem bloquear autoplay com som.
+    waitingForGesture = true;
     return false;
   }
+}
+
+function resumeMusicFromGesture(event) {
+  if (!waitingForGesture || (event.type === "pointerdown" && sound.contains(event.target))) return;
+  startMusic();
 }
 
 sound.addEventListener("click", async () => {
   if (audio.paused) {
     const started = await startMusic();
-    if (!started) {
-      note.textContent = "Toque novamente para ouvir a música.";
-    }
+    if (!started) note.textContent = "Seu navegador bloqueou o início automático. Toque novamente para ouvir.";
   } else {
     audio.pause();
     syncSoundControl();
   }
 });
 
-// Primeiro tentamos iniciar ao abrir a página. Se o navegador bloquear,
-// a primeira interação com o conteúdo libera a reprodução automaticamente.
-startMusic().then(started => {
-  if (started) return;
-
-  const resumeOnInteraction = event => {
-    if (event.type === "pointerdown" && sound.contains(event.target)) return;
-    startMusic().then(ok => {
-      if (ok) {
-        window.removeEventListener("pointerdown", resumeOnInteraction);
-        window.removeEventListener("keydown", resumeOnInteraction);
-        window.removeEventListener("scroll", resumeOnInteraction);
-      }
-    });
-  };
-
-  window.addEventListener("pointerdown", resumeOnInteraction, { passive: true });
-  window.addEventListener("keydown", resumeOnInteraction);
-  window.addEventListener("scroll", resumeOnInteraction, { passive: true });
-});
-
+// Tenta tocar assim que a página abre. Se houver bloqueio, a primeira
+// interação da Dany com a página (toque, tecla ou rolagem) tenta liberar o som.
 audio.addEventListener("play", syncSoundControl);
 audio.addEventListener("pause", syncSoundControl);
+window.addEventListener("pointerdown", resumeMusicFromGesture, { passive: true });
+window.addEventListener("keydown", resumeMusicFromGesture);
+window.addEventListener("scroll", resumeMusicFromGesture, { passive: true });
+startMusic();
 
 button.addEventListener("click", async () => {
   if (button.disabled) return;
