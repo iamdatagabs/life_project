@@ -3,23 +3,61 @@ const sound = document.getElementById("soundToggle");
 const button = document.getElementById("answerButton");
 const note = document.getElementById("answerNote");
 
+function syncSoundControl() {
+  const playing = !audio.paused;
+  sound.classList.toggle("playing", playing);
+  sound.querySelector("small").textContent = playing ? "pausar" : "som";
+  sound.setAttribute("aria-label", playing ? "Pausar música" : "Ativar música");
+}
+
+async function startMusic() {
+  if (!audio.paused) return true;
+  try {
+    await audio.play();
+    syncSoundControl();
+    return true;
+  } catch {
+    // O navegador pode bloquear autoplay com som; tentaremos novamente
+    // assim que houver uma interação legítima da pessoa com a página.
+    return false;
+  }
+}
+
 sound.addEventListener("click", async () => {
   if (audio.paused) {
-    try {
-      await audio.play();
-      sound.classList.add("playing");
-      sound.querySelector("small").textContent = "pausar";
-      sound.setAttribute("aria-label", "Pausar música");
-    } catch {
-      note.textContent = "Não foi possível carregar a música. Confira sua conexão ou tente novamente.";
+    const started = await startMusic();
+    if (!started) {
+      note.textContent = "Toque novamente para ouvir a música.";
     }
   } else {
     audio.pause();
-    sound.classList.remove("playing");
-    sound.querySelector("small").textContent = "som";
-    sound.setAttribute("aria-label", "Ativar música");
+    syncSoundControl();
   }
 });
+
+// Primeiro tentamos iniciar ao abrir a página. Se o navegador bloquear,
+// a primeira interação com o conteúdo libera a reprodução automaticamente.
+startMusic().then(started => {
+  if (started) return;
+
+  const resumeOnInteraction = event => {
+    if (event.type === "pointerdown" && sound.contains(event.target)) return;
+    startMusic().then(ok => {
+      if (ok) {
+        window.removeEventListener("pointerdown", resumeOnInteraction);
+        window.removeEventListener("keydown", resumeOnInteraction);
+        window.removeEventListener("scroll", resumeOnInteraction);
+      }
+    });
+  };
+
+  window.addEventListener("pointerdown", resumeOnInteraction, { passive: true });
+  window.addEventListener("keydown", resumeOnInteraction);
+  window.addEventListener("scroll", resumeOnInteraction, { passive: true });
+});
+
+audio.addEventListener("play", syncSoundControl);
+audio.addEventListener("pause", syncSoundControl);
 
 button.addEventListener("click", async () => {
   if (button.disabled) return;
