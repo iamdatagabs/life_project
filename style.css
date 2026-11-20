@@ -55,3 +55,35 @@ button{touch-action:manipulation}
 @media(prefers-reduced-motion:reduce){
   .reveal{opacity:1;transform:none;animation:none}
 }
+
+/* A distância entre as cidades, capítulo a capítulo */
+.distance-story{padding:22px 0 125px;border-top:1px solid var(--line)}
+.distance-heading{display:grid;grid-template-columns:1fr 2fr;gap:8%;margin-bottom:58px}
+.distance-heading .eyebrow{padding-top:12px}
+.distance-heading h2{margin:0 0 16px;font:400 clamp(30px,4vw,43px)/1.25 var(--serif)}
+.distance-heading>div{grid-column:2}
+.distance-heading p:last-child{grid-column:2;margin:0;color:#625e58;max-width:580px}
+.distance-step{display:grid;grid-template-columns:1fr 2fr;gap:8%;padding:25px 0;border-top:1px solid var(--line)}
+.distance-period{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--pink);padding-top:3px}
+.distance-details{min-width:0}
+.distance-cities{display:flex;justify-content:space-between;gap:18px;color:var(--muted);font-size:13px;line-height:1.5}
+.distance-cities span{display:flex;flex-direction:column}
+.distance-cities span:last-child{text-align:right;align-items:flex-end}
+.distance-cities b{font-size:9px;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:#9a7779;margin-bottom:4px}
+.distance-track{height:2px;margin:17px 0 8px;background:#e6e1d9;position:relative}
+.distance-track span{display:block;width:var(--distance);height:2px;background:var(--pink);position:relative;transform-origin:left;animation:distanceGrow 1.1s cubic-bezier(.2,.7,.2,1) both}
+.distance-track span:after{content:"";position:absolute;right:-4px;top:-3px;width:8px;height:8px;border-radius:50%;background:var(--pink)}
+.distance-km{margin:0;color:#81766e;font-size:10px;letter-spacing:.04em}
+.distance-footnote{margin:25px 0 0 34%;color:#817970;font-size:11px;line-height:1.6}
+@keyframes distanceGrow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@media(max-width:650px){
+ .distance-story{padding:10px 0 82px}
+ .distance-heading{grid-template-columns:1fr;gap:12px;margin-bottom:35px}
+ .distance-heading .eyebrow{padding-top:0;margin-bottom:4px}
+ .distance-heading h2,.distance-heading p:last-child{grid-column:1}
+ .distance-heading h2{font-size:clamp(29px,7.4vw,38px)}
+ .distance-step{grid-template-columns:1fr;gap:9px;padding:20px 0}
+ .distance-cities{font-size:12px}
+ .distance-footnote{margin-left:0}
+}
+@media(prefers-reduced-motion:reduce){.distance-track span{animation:none}}
